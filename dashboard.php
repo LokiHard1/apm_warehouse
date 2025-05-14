@@ -1,5 +1,6 @@
 <?php
 require 'config.php';
+checkAdminAccess();
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
@@ -62,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_quantity'])) {
         <a href="dashboard.php" <?= basename($_SERVER['PHP_SELF']) === 'dashboard.php' ? 'class="active"' : '' ?>>Панель управления</a>
         <a href="reports.php" <?= basename($_SERVER['PHP_SELF']) === 'reports.php' ? 'class="active"' : '' ?>>Отчеты</a>
         <?php if ($_SESSION['username'] === 'admin'): ?>
-            <a href="register.php" <?= basename($_SERVER['PHP_SELF']) === 'register.php' ? 'class="active"' : '' ?>>Добавить работника</a>
+            <a href="register.php" <?= basename($_SERVER['PHP_SELF']) === 'register.php' ? 'class="active"' : '' ?>>Добавить пользователя</a>
         <?php endif; ?>
     </nav>
     

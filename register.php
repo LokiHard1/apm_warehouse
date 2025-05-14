@@ -1,11 +1,6 @@
 <?php
 require 'config.php';
-
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
-}
-
+checkAdminAccess();
 
 $error = '';
 $success = '';
@@ -14,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
     $full_name = trim($_POST['full_name']);
+    $role = $_POST['role']; 
 
     if (empty($username) || empty($password) || empty($full_name)) {
         $error = 'Все поля обязательны для заполнения';
@@ -24,12 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt->fetch()) {
             $error = 'Пользователь с таким логином уже существует';
         } else {
-            $stmt = $pdo->prepare('INSERT INTO users (username, password, full_name) VALUES (?, ?, ?)');
-            $stmt->execute([$username, $password, $full_name]);
+            $stmt = $pdo->prepare('INSERT INTO users (username, password, full_name, role) VALUES (?, ?, ?, ?)');
+            $stmt->execute([$username, $password, $full_name, $role]);
             
-            logActivity($pdo, 'register_user', 'Зарегистрирован новый пользователь: ' . $username);
+            logActivity($pdo, 'register_user', 'Зарегистрирован новый пользователь: ' . $username . ' (роль: ' . $role . ')');
 
-            $success = 'Новый работник успешно зарегистрирован!';
+            $success = 'Новый пользователь успешно зарегистрирован!';
         }
     }
 }
@@ -62,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     <main>
         <section class="register-form">
-            <h2>Регистрация нового работника</h2>
+            <h2>Регистрация нового пользователя</h2>
             
             <?php if ($error): ?>
                 <div class="error"><?= $error ?></div>
@@ -86,6 +82,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="form-group">
                     <label for="full_name">Полное имя:</label>
                     <input type="text" id="full_name" name="full_name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="role">Роль:</label>
+                    <select id="role" name="role" required>
+                        <option value="admin">Работник склада</option>
+                        <option value="customer">Заказчик</option>
+                    </select>
                 </div>
                 
                 <button type="submit" class="btn">Зарегистрировать</button>

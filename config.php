@@ -27,4 +27,17 @@ function logActivity($pdo, $action, $description) {
         $stmt->execute([$_SESSION['user_id'], $action, $description]);
     }
 }
+function checkAdminAccess() {
+    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+        header('Location: customer_dashboard.php');
+        exit;
+    }
+}
+
+function checkCustomerAccess() {
+    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'customer') {
+        header('Location: dashboard.php');
+        exit;
+    }
+}
 ?>

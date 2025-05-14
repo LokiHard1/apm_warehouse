@@ -13,10 +13,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['full_name'] = $user['full_name'];
+        $_SESSION['role'] = $user['role'];
 
     logActivity($pdo, 'login', 'Пользователь вошел в систему');
 
+        if ($user['role'] === 'admin') {
         header('Location: dashboard.php');
+    } else {
+        header('Location: customer_dashboard.php');
+    }
         exit;
     } else {
         $error = "Неверное имя пользователя или пароль";

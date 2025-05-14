@@ -204,3 +204,40 @@ section {
 .logs-table tr:nth-child(even) {
     background-color: #f8f9fa;
 }
+
+.customer-nav {
+    background: #28a745;
+}
+
+.customer-nav a:hover {
+    background: #218838;
+}
+
+.status-pending {
+    color: #ffc107;
+}
+
+.status-processing {
+    color: #17a2b8;
+}
+
+.status-completed {
+    color: #28a745;
+}
+
+.status-cancelled {
+    color: #dc3545;
+}
+
+select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
