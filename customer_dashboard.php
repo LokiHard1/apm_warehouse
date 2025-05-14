@@ -109,39 +109,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
         </section>
         
         <section id="orders">
-            <h2>Мои заказы</h2>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>Товар</th>
-                        <th>Количество</th>
-                        <th>Статус</th>
-                        <th>Дата заказа</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($orders as $order): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($order['product_name']) ?></td>
-                        <td><?= $order['quantity'] ?></td>
-                        <td>
-                            <?php 
-                            $statuses = [
-                                'pending' => 'Ожидает',
-                                'processing' => 'В обработке',
-                                'completed' => 'Завершен',
-                                'cancelled' => 'Отменен'
-                            ];
-                            echo $statuses[$order['status']] ?? $order['status'];
-                            ?>
-                        </td>
-                        <td><?= $order['created_at'] ?></td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </section>
+    <h2>Мои заказы</h2>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Товар</th>
+                <th>Количество</th>
+                <th>Статус</th>
+                <th>Дата заказа</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($orders as $order): ?>
+            <tr>
+                <td><?= htmlspecialchars($order['product_name']) ?></td>
+                <td><?= $order['quantity'] ?></td>
+                <td class="status-<?= $order['status'] ?>">
+                    <?php 
+                    $statuses = [
+                        'pending' => 'Ожидает',
+                        'processing' => 'В обработке',
+                        'completed' => 'Завершен',
+                        'cancelled' => 'Отменен'
+                    ];
+                    echo $statuses[$order['status']] ?? $order['status'];
+                    ?>
+                </td>
+                <td><?= $order['created_at'] ?></td>
+                <td>
+                    <?php if ($order['status'] === 'pending'): ?>
+                        <a href="cancel_order.php?id=<?= $order['id'] ?>" class="btn-small btn-danger" onclick="return confirm('Вы уверены, что хотите отменить этот заказ?')">Отменить</a>
+                    <?php else: ?>
+                        <span>Нет действий</span>
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</section>
     </main>
 </body>
 </html>

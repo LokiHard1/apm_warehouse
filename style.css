@@ -241,3 +241,33 @@ select {
 .form-group {
     margin-bottom: 1.5rem;
 }
+
+.orders-management table {
+    margin-top: 1rem;
+}
+
+.orders-management th, 
+.orders-management td {
+    padding: 0.75rem;
+    vertical-align: middle;
+}
+
+.btn-complete {
+    background: #28a745;
+}
+
+.btn-complete:hover {
+    background: #218838;
+}
+
+.btn-process {
+    background: #17a2b8;
+}
+
+.btn-process:hover {
+    background: #138496;
+}
+
+.status-cell {
+    font-weight: bold;
+}

@@ -135,6 +135,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_quantity'])) {
                 </tbody>
             </table>
         </section>
+        <section class="orders-management">
+    <h2>Управление заказами</h2>
+    
+    <?php
+    $stmt = $pdo->query('
+        SELECT o.*, i.product_name, u.full_name AS customer_name 
+        FROM orders o
+        JOIN inventory i ON o.product_id = i.id
+        JOIN users u ON o.customer_id = u.id
+        ORDER BY o.created_at DESC
+    ');
+    $orders = $stmt->fetchAll();
+    ?>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Товар</th>
+                <th>Количество</th>
+                <th>Заказчик</th>
+                <th>Дата заказа</th>
+                <th>Статус</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($orders as $order): ?>
+            <tr>
+                <td><?= $order['id'] ?></td>
+                <td><?= htmlspecialchars($order['product_name']) ?></td>
+                <td><?= $order['quantity'] ?></td>
+                <td><?= htmlspecialchars($order['customer_name']) ?></td>
+                <td><?= $order['created_at'] ?></td>
+                <td class="status-<?= $order['status'] ?>">
+                    <?php 
+                    $statuses = [
+                        'pending' => 'Ожидает',
+                        'processing' => 'В обработке',
+                        'completed' => 'Завершен',
+                        'cancelled' => 'Отменен'
+                    ];
+                    echo $statuses[$order['status']] ?? $order['status'];
+                    ?>
+                </td>
+                <td>
+                    <?php if ($order['status'] === 'pending'): ?>
+                        <a href="update_order.php?id=<?= $order['id'] ?>&status=processing" class="btn-small">В обработку</a>
+                        <a href="update_order.php?id=<?= $order['id'] ?>&status=cancelled" class="btn-small btn-danger">Отменить</a>
+                    <?php elseif ($order['status'] === 'processing'): ?>
+                        <a href="update_order.php?id=<?= $order['id'] ?>&status=completed" class="btn-small">Завершить</a>
+                        <a href="update_order.php?id=<?= $order['id'] ?>&status=cancelled" class="btn-small btn-danger">Отменить</a>
+                    <?php else: ?>
+                        <span>Нет действий</span>
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</section>
     </main>
 </body>
 </html>
