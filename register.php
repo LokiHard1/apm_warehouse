@@ -20,8 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt->fetch()) {
             $error = 'Пользователь с таким логином уже существует';
         } else {
+            $hashed_password = hashPassword($password);
             $stmt = $pdo->prepare('INSERT INTO users (username, password, full_name, role) VALUES (?, ?, ?, ?)');
-            $stmt->execute([$username, $password, $full_name, $role]);
+            $stmt->execute([$username, $hashed_password, $full_name, $role]);
             
             logActivity($pdo, 'register_user', 'Зарегистрирован новый пользователь: ' . $username . ' (роль: ' . $role . ')');
 
@@ -30,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -50,9 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     <nav class="main-nav">
         <a href="dashboard.php" <?= basename($_SERVER['PHP_SELF']) === 'dashboard.php' ? 'class="active"' : '' ?>>Панель управления</a>
-        <a href="reports.php" <?= basename($_SERVER['PHP_SELF']) === 'reports.php' ? 'class="active"' : '' ?>>Отчеты</a>
-        <?php if ($_SESSION['username'] === 'admin'): ?>
-            <a href="register.php" <?= basename($_SERVER['PHP_SELF']) === 'register.php' ? 'class="active"' : '' ?>>Добавить работника</a>
+        <a href="reports.php" <?= basename($_SERVER['PHP_SELF']) === 'reports.php' ? 'class="active"' : '' ?>>История действий</a>
+        <?php if ($_SESSION['role'] === 'admin'): ?>
+            <a href="register.php" <?= basename($_SERVER['PHP_SELF']) === 'register.php' ? 'class="active"' : '' ?>>Добавить пользователя</a>
         <?php endif; ?>
     </nav>
     

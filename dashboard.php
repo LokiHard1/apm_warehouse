@@ -61,8 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_quantity'])) {
     
     <nav class="main-nav">
         <a href="dashboard.php" <?= basename($_SERVER['PHP_SELF']) === 'dashboard.php' ? 'class="active"' : '' ?>>Панель управления</a>
-        <a href="reports.php" <?= basename($_SERVER['PHP_SELF']) === 'reports.php' ? 'class="active"' : '' ?>>Отчеты</a>
-        <?php if ($_SESSION['username'] === 'admin'): ?>
+        <a href="reports.php" <?= basename($_SERVER['PHP_SELF']) === 'reports.php' ? 'class="active"' : '' ?>>История действий</a>
+        <?php if ($_SESSION['role'] === 'admin'): ?>
             <a href="register.php" <?= basename($_SERVER['PHP_SELF']) === 'register.php' ? 'class="active"' : '' ?>>Добавить пользователя</a>
         <?php endif; ?>
     </nav>
@@ -89,7 +89,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_quantity'])) {
                 <button type="submit" name="add_product" class="btn">Добавить</button>
             </form>
         </section>
-        
         
         <section class="inventory-list">
             <h2>Текущие запасы</h2>

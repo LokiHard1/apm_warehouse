@@ -26,7 +26,7 @@ $logs = $stmt->fetchAll();
 </head>
 <body>
     <header>
-        <h1>APM Склад - Отчеты</h1>
+        <h1>APM Склад - История действий</h1>
         <div class="user-info">
             Вы вошли как: <?= htmlspecialchars($_SESSION['full_name']) ?>
             <a href="logout.php" class="logout">Выйти</a>
@@ -35,9 +35,9 @@ $logs = $stmt->fetchAll();
     
     <nav class="main-nav">
         <a href="dashboard.php">Панель управления</a>
-        <a href="reports.php" class="active">Отчеты</a>
-        <?php if ($_SESSION['username'] === 'admin'): ?>
-            <a href="register.php">Добавить работника</a>
+        <a href="reports.php" class="active">История действий</a>
+        <?php if ($_SESSION['role'] === 'admin'): ?>
+            <a href="register.php">Добавить пользователя</a>
         <?php endif; ?>
     </nav>
     

@@ -18,7 +18,6 @@ if (!in_array($status, $allowed_statuses)) {
 }
 
 try {
-    // Получаем информацию о заказе
     $stmt = $pdo->prepare('SELECT o.*, i.product_name, i.quantity as current_quantity FROM orders o JOIN inventory i ON o.product_id = i.id WHERE o.id = ?');
     $stmt->execute([$order_id]);
     $order = $stmt->fetch();
@@ -29,11 +28,9 @@ try {
         exit;
     }
     
-    // Обновляем статус заказа
     $stmt = $pdo->prepare('UPDATE orders SET status = ? WHERE id = ?');
     $stmt->execute([$status, $order_id]);
     
-    // Если статус "completed", списываем товар со склада
     if ($status === 'completed') {
         $new_quantity = $order['current_quantity'] - $order['quantity'];
         if ($new_quantity < 0) {
