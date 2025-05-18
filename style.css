@@ -271,3 +271,44 @@ select {
 .status-cell {
     font-weight: bold;
 }
+
+.export-section {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.sort-options {
+    margin-bottom: 2rem;
+}
+
+.sort-options .btn {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.sort-options .btn.active {
+    background: #007bff;
+}
+
+.export-form {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 5px;
+}
+
+.preview table {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.preview th, 
+.preview td {
+    padding: 0.5rem;
+    border: 1px solid #dee2e6;
+}
+
+.preview th {
+    background: #343a40;
+    color: white;
+}

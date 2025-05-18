@@ -34,11 +34,12 @@ $logs = $stmt->fetchAll();
     </header>
     
     <nav class="main-nav">
-        <a href="dashboard.php">Панель управления</a>
-        <a href="reports.php" class="active">История действий</a>
-        <?php if ($_SESSION['role'] === 'admin'): ?>
-            <a href="register.php">Добавить пользователя</a>
-        <?php endif; ?>
+    <a href="dashboard.php" <?= basename($_SERVER['PHP_SELF']) === 'dashboard.php' ? 'class="active"' : '' ?>>Панель управления</a>
+    <a href="reports.php" <?= basename($_SERVER['PHP_SELF']) === 'reports.php' ? 'class="active"' : '' ?>>История действий</a>
+    <a href="export_logs.php" <?= basename($_SERVER['PHP_SELF']) === 'export_logs.php' ? 'class="active"' : '' ?>>Экспорт истории</a>
+    <?php if ($_SESSION['role'] === 'admin'): ?>
+        <a href="register.php" <?= basename($_SERVER['PHP_SELF']) === 'register.php' ? 'class="active"' : '' ?>>Добавить пользователя</a>
+    <?php endif; ?>
     </nav>
     
     <main>
