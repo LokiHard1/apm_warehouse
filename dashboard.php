@@ -27,7 +27,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
     header('Location: dashboard.php');
     exit;
 }
+$topProductsQuery = $pdo->query('
+    SELECT 
+        i.product_name,
+        COUNT(DISTINCT o.customer_id) as unique_customers,
+        SUM(o.quantity) as total_ordered
+    FROM orders o
+    JOIN inventory i ON o.product_id = i.id
+    WHERE o.status != "cancelled"
+    GROUP BY i.product_name
+    ORDER BY unique_customers DESC, total_ordered DESC
+    LIMIT 5
+');
 
+$topProducts = $topProductsQuery->fetchAll();
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_quantity'])) {
     $id = (int)$_POST['id'];
     $new_quantity = (int)$_POST['new_quantity'];
@@ -195,6 +208,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_quantity'])) {
             <?php endforeach; ?>
         </tbody>
     </table>
+</section>
+<section class="top-products-section" id="top-products">
+    <h2>Топ популярных продуктов</h2>
+    <p>Рейтинг основан на количестве уникальных заказчиков и общем количестве заказов</p>
+    
+    <?php if (!empty($topProducts)): ?>
+        <table class="top-products-table">
+            <thead>
+                <tr>
+                    <th>Место</th>
+                    <th>Название продукта</th>
+                    <th>Уникальных заказчиков</th>
+                    <th>Всего заказано</th>
+                    <th>Рейтинг популярности</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($topProducts as $index => $product): 
+                    // Рассчитываем рейтинг (60% вес - уникальные заказчики, 40% - общее количество)
+                    $rating = 0.6 * $product['unique_customers'] + 0.4 * ($product['total_ordered'] / 10);
+                ?>
+                    <tr>
+                        <td><?= $index + 1 ?></td>
+                        <td><?= htmlspecialchars($product['product_name']) ?></td>
+                        <td><?= $product['unique_customers'] ?></td>
+                        <td><?= $product['total_ordered'] ?></td>
+                        <td>
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: <?= min(100, $rating * 10) ?>%"></div>
+                                <span class="rating-value"><?= number_format($rating, 1) ?></span>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        
+        <div class="popularity-analysis">
+            <h3>Анализ популярности</h3>
+            <p>Рейтинг рассчитывается по формуле: <strong>0.6 × (уникальные заказчики) + 0.4 × (всего заказано / 10)</strong></p>
+            <p>Это позволяет учитывать как широту спроса (количество разных заказчиков), так и глубину (общее количество заказов).</p>
+        </div>
+    <?php else: ?>
+        <p>Нет данных о заказах для составления рейтинга.</p>
+    <?php endif; ?>
 </section>
     </main>
 </body>

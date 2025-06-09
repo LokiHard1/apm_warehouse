@@ -312,3 +312,74 @@ select {
     background: #343a40;
     color: white;
 }
+
+.top-products-section {
+    margin-top: 2rem;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.top-products-table {
+    width: 100%;
+    margin: 1rem 0;
+    border-collapse: collapse;
+}
+
+.top-products-table th {
+    background: #2c3e50;
+    color: white;
+    padding: 0.75rem;
+    text-align: left;
+}
+
+.top-products-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.top-products-table tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.rating-bar {
+    height: 20px;
+    background: #ecf0f1;
+    border-radius: 10px;
+    position: relative;
+    width: 100%;
+}
+
+.rating-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: #3498db;
+    transition: width 0.5s ease;
+}
+
+.rating-value {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 0.8rem;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+.popularity-analysis {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 5px;
+    border-left: 4px solid #3498db;
+}
+
+.top-products-link {
+    background: #3498db;
+}
+
+.top-products-link:hover {
+    background: #2980b9;
+}
